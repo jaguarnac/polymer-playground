@@ -1,0 +1,51 @@
+<link rel="import"
+      href="../bower_components/polymer/polymer.html">
+<!-- import the iron-input custom element -->
+
+<dom-module id="custom-counter">
+
+  <template>
+    <div>
+        <span>{{value}}</span>
+    </div>
+  </template>
+
+  <script>
+    function incrementCounter(ctx, incr){
+        if (!incr){ incr = 1;}
+        incr = Math.floor(incr);
+        ctx.value += incr;
+    }
+    Polymer({
+      is: "custom-counter",
+      properties: {
+        value: {
+          type: Number,
+          value: 0
+        },
+        //average increment per second
+        aips: {
+          type: Number,
+          value: 10
+        },
+        tickInterval: {
+          type: Number,
+          value: 100
+        },
+        _ipt: {
+          type: Number
+        }
+      },
+      ready: function(){
+          var ctx = this;
+          if (!ctx._ipt){
+              Math.round(ctx._ipt = ctx.aips/(100/ctx.tickInterval));
+          }
+          setInterval(function(){
+              incrementCounter(ctx, ctx._ipt);
+          }, ctx.tickInterval);
+      }
+    });
+  </script>
+
+</dom-module>
